@@ -1,0 +1,105 @@
+<!-- special thanks to mblkolo -->
+<html>
+  <head>
+    <title>С праздником)</title>
+  </head>
+  <body style="background-color: black">
+    <canvas id="can" width="500" height="500" style="margin:auto;display: block;">Настенька, с днём святого Валентина</canvas>
+    <script>
+      var canvas = document.getElementById("can");
+      var cn = canvas.getContext("2d");
+      var x, y, rad;
+      var sum_count = 0;
+      var points = [];
+      for(var t=0; t<360; t+=3) {
+        rad = t*Math.PI/180;
+        x = (16 * Math.sin(rad)*Math.sin(rad)*Math.sin(rad)) * 15 + 250;
+        y = -(13 * Math.cos(rad) - 5 * Math.cos(2*rad) - 2 * Math.cos(3*rad) - Math.cos(4*rad) ) * 15 + 220;
+        points.push({x:x, y:y});
+      }
+      cn.strokeStyle = '#ff3333';
+      cn.fillStyle = '#000';
+      cn.fillRect(0, 0, canvas.width, canvas.height);
+      
+      function draw(step, length) {
+        var i, p1, p2;
+        p1 = points[step];
+        p2 = points[(step+length) % points.length];
+        cn.beginPath();
+        cn.moveTo(p1.x, p1.y);
+        cn.lineTo(p2.x, p2.y);
+        cn.stroke();
+        
+        if(step == points.length - 1 || (step+length) == points.length) {
+        step = 0;
+        length++;
+        cn.fillStyle = 'rgba(0,0,0,0.25)';
+        cn.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // - - - - - - - - - -
+        
+        var str1 = "С праздником,";//13
+        var str2 = "любимая моя";//11
+        var str3 = "Настенька";//9
+        var res_str1 = "";//13
+        var res_str2 = "";//11
+        var res_str3 = "";//9
+        
+        if (sum_count <=  50){
+        sum_count = sum_count + 1;
+        }
+        cnt2 = sum_count - str1.length;
+        cnt3 = sum_count - (str1.length+str2.length);
+        if (sum_count < str1.length){
+            res_str1 = str1.slice(0, sum_count);
+            for (let i = 0; i < str1.length - sum_count; i++){
+                res_str1 = res_str1 + "  ";
+            }
+        }
+        else if (cnt2 < str2.length){
+            res_str1 = str1;
+            res_str2 = str2.slice(0, sum_count - str1.length);
+            for (let i = 0; i < str2.length - cnt2; i++){
+                res_str2 = res_str2 + "  ";
+            }
+        }
+        else if (cnt3 < str3.length){
+            res_str1 = str1;
+            res_str2 = str2;
+            res_str3 = str3.slice(0, sum_count - (str1.length+str2.length));
+           for (let i = 0; i < str3.length - cnt3; i++){
+                res_str3 = res_str3 + "  ";
+            }
+        }
+        else 
+        {
+            res_str1 = str1;
+            res_str2 = str2;
+            res_str3 = str3;
+        }
+        
+        cn.font = 'italic 30px cursive';
+        
+        cn.textAlign = "center";
+        cn.textBaseline = "middle";
+        cn.strokeText(res_str1, 250, 200);
+        cn.strokeText(res_str2, 250, 240);
+        cn.strokeText(res_str3, 250, 280);
+        
+        cn.font = "italic 14pt Arial";
+        cn.textBaseline = "bottom";
+        cn.textAlign = "right";
+        cn.strokeText("14.02.2021", 500, 500);
+        }
+        
+        if(length == 15){
+        length = 5;
+        }
+        setTimeout(function(){
+        draw(step+1, length);
+        }, 3);
+      }
+      draw(0, 1);
+    </script>
+  </body>
+</html>
